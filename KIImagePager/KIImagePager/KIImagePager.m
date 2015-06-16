@@ -12,9 +12,6 @@
 
 #import "KIImagePager.h"
 
-@interface KIImagePagerDefaultImageSource : NSObject <KIImagePagerImageSource>
-@end
-
 @interface KIImagePager () <UIScrollViewDelegate>
 {
     __weak id <KIImagePagerDataSource> _dataSource;
@@ -205,7 +202,8 @@
                 // Instantiate and show Actvity Indicator
                 UIActivityIndicatorView *activityIndicator = [UIActivityIndicatorView new];
                 activityIndicator.center = (CGPoint){_scrollView.frame.size.width/2, _scrollView.frame.size.height/2};
-                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+                activityIndicator.color = [UIColor grayColor];
                 [imageView addSubview:activityIndicator];
                 [activityIndicator startAnimating];
                 [_activityIndicators setObject:activityIndicator forKey:[NSString stringWithFormat:@"%d", i]];
@@ -442,21 +440,27 @@
 
 @end
 
-
-
 #pragma mark  - Image source
 
-
+#import "UIKit+AFNetworking.h"
 @implementation KIImagePagerDefaultImageSource
 
--(void) imageWithUrl:(NSURL*)url completion:(KIImagePagerImageRequestBlock)completion
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSData *imageData = [NSData dataWithContentsOfURL:url];
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            if(completion) completion([UIImage imageWithData:imageData],nil);
-        });
-    });
+- (UIImageView *)imageView {
+        if (!_imageView) {
+                _imageView = [[UIImageView alloc] init];
+            }
+        return _imageView;
+    }
+
+-(void) imageWithUrl:(NSURL*)url completion:(KIImagePagerImageRequestBlock)completion {
+        [[UIImageView new] setImageWithURLRequest:[NSURLRequest requestWithURL:url
+                                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                               timeoutInterval:NSTimeIntervalSince1970]
+                                 placeholderImage:nil
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                     if(completion) completion(image, nil);
+                                                 }
+                                          failure:nil];
 }
 
 @end

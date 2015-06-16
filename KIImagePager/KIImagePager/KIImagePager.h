@@ -44,6 +44,11 @@ typedef void(^KIImagePagerImageRequestBlock)(UIImage*image, NSError * error);
 
 @end
 
+@interface KIImagePagerDefaultImageSource : NSObject <KIImagePagerImageSource>
+
+@property (nonatomic) UIImageView *imageView;
+
+@end
 
 @interface KIImagePager : UIView
 
