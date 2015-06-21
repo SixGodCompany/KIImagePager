@@ -82,3 +82,14 @@ typedef void(^KIImagePagerImageRequestBlock)(UIImage*image, NSError * error);
 
 @end
 
+@interface XBKIImagePagerDefaultImageSource : KIImagePagerDefaultImageSource
+
+- (void)imageWithUrl:(NSURL*)url completion:(KIImagePagerImageRequestBlock)completion;
+
+@end
+
+@interface XBKIImagePager : KIImagePager
+
++ (id<KIImagePagerImageSource>)defaultDataSource;
+
+@end
