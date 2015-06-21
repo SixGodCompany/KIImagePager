@@ -453,14 +453,6 @@
 }
 
 -(void) imageWithUrl:(NSURL*)url completion:(KIImagePagerImageRequestBlock)completion {
-    //    [[UIImageView new] setImageWithURLRequest:NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:<#(NSTimeInterval)#> placeholderImage:<#(UIImage *)#> success:<#^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)success#> failure:<#^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)failure#>
-    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    //        NSData *imageData = [NSData dataWithContentsOfURL:url];
-    //        dispatch_sync(dispatch_get_main_queue(), ^{
-    //            if(completion) completion([UIImage imageWithData:imageData],nil);
-    //        });
-    //    });
-    //    [NSURLRequest requestWithURL:url]
     [[[UIImageView alloc]init] setImageWithURLRequest:[NSURLRequest requestWithURL:url]
                                      placeholderImage:nil
                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
